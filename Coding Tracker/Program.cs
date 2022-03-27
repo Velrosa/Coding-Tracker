@@ -14,12 +14,9 @@ namespace Coding_Tracker
     internal class Program
     {
 
-        public static string dbString = "Data Source=database.sqlite3";
+        public static string conString = ConfigurationManager.AppSettings.Get("conString");
         static void Main(string[] args)
         {
-            string sAttr = ConfigurationManager.AppSettings.Get("conString");
-
-
             var tableData = new List<List<object>>
             {
                 new List<object>{ "Sakura Yamamoto", "Support Engineer", "London", 46},
@@ -27,9 +24,9 @@ namespace Coding_Tracker
                 new List<object>{ "Shad Decker", "Regional Director", "Edinburgh"},
             };
 
-            ConsoleTableBuilder.From(tableData).ExportAndWriteLine();
+            //ConsoleTableBuilder.From(tableData).ExportAndWriteLine();
 
-            Console.ReadLine();
+            //Console.ReadLine();
 
             while (true)
             {
@@ -128,22 +125,23 @@ namespace Coding_Tracker
 
         public static void InsertRecord()
         {
-            Console.Write("Inserting a Habit Record...  Type MENU to return.\nPlease Enter the quantity: ");
-            string quantity_value = Validate(Console.ReadLine(), "number");
-            if (quantity_value == "MENU") { return; }
+            Console.WriteLine("Inserting a Session Record...  Type MENU to return.");
+            Console.Write("Please Enter the Start Date (DD/MM/YY): ");
+            string start_time = Validate(Console.ReadLine(), "date");
+            if (start_time == "MENU") { return; }
 
-            Console.Write("Please Enter the Date (DD/MM/YY): ");
-            string date_value = Validate(Console.ReadLine(), "date");
-            if (date_value == "MENU") { return; }
+            Console.Write("Please Enter the End Date (DD/MM/YY): ");
+            string end_time = Validate(Console.ReadLine(), "date");
+            if (end_time == "MENU") { return; }
 
-            using (var con = new SQLiteConnection(dbString))
+            using (var con = new SQLiteConnection(conString))
             {
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "INSERT INTO habit (quantity, date) VALUES (@quantity, @date)";
-                    cmd.Parameters.AddWithValue("@quantity", quantity_value);
-                    cmd.Parameters.AddWithValue("@date", date_value);
+                    cmd.CommandText = "INSERT INTO sessions (start_time, end_time) VALUES (@start_time, @end_time)";
+                    cmd.Parameters.AddWithValue("@start_time", start_time);
+                    cmd.Parameters.AddWithValue("@end_time", end_time);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -151,24 +149,24 @@ namespace Coding_Tracker
 
         public static void ViewRecords(string selector)
         {
-            Console.WriteLine("\nDisplaying all habit records:\n");
+            Console.WriteLine("\nDisplaying all session records:\n");
 
-            using (var con = new SQLiteConnection(dbString))
+            using (var con = new SQLiteConnection(conString))
             {
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "SELECT rowid, * FROM habit";
+                    cmd.CommandText = "SELECT rowid, * FROM sessions";
 
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
                         {
-                            Console.WriteLine("  ID  | Quantity | Date");
+                            Console.WriteLine("  ID  | Start Time | End Time");
                             Console.WriteLine("-----------------------------");
                             while (reader.Read())
                             {
-                                Console.WriteLine("{0,5} | {1,8} | {2}", reader["id"], reader["quantity"], reader["date"]);
+                                Console.WriteLine("{0,5} | {1,8} | {2}", reader["id"], reader["start_time"], reader["end_time"]);
                             }
                         }
                     }
@@ -185,16 +183,17 @@ namespace Coding_Tracker
 
         public static void DeleteRecord()
         {
-            Console.Write("\nDeleting a Record...  Type MENU to return.\nEnter ID for entry to delete: ");
+            Console.WriteLine("\nDeleting a Record...  Type MENU to return.");
+            Console.Write("Enter ID for entry to delete: ");
             string delete_index = Validate(Console.ReadLine(), "id");
             if (delete_index == "MENU") { return; }
 
-            using (var con = new SQLiteConnection(dbString))
+            using (var con = new SQLiteConnection(conString))
             {
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "DELETE FROM habit WHERE id=(@Id)";
+                    cmd.CommandText = "DELETE FROM sessions WHERE id=(@Id)";
                     cmd.Parameters.AddWithValue("@Id", delete_index);
                     cmd.ExecuteNonQuery();
                 }
@@ -205,26 +204,26 @@ namespace Coding_Tracker
         {
             Console.WriteLine("\nUpdating a Record...  Type MENU to return.");
 
-            Console.Write("Please Enter the ID of the log to change: ");
+            Console.Write("Please Enter the ID of the entry to change: ");
             string entry_id = Validate(Console.ReadLine(), "id");
             if (entry_id == "MENU") { return; }
 
-            Console.Write("Please Enter a new quantity: ");
-            string entry_quantity = Validate(Console.ReadLine(), "number");
-            if (entry_quantity == "MENU") { return; }
+            Console.Write("Please Enter a start date (DD/MM/YY): ");
+            string start_time = Validate(Console.ReadLine(), "date");
+            if (start_time == "MENU") { return; }
 
-            Console.Write("Please Enter a new date (DD/MM/YY): ");
-            string entry_date = Validate(Console.ReadLine(), "date");
-            if (entry_date == "MENU") { return; }
+            Console.Write("Please Enter a end date (DD/MM/YY): ");
+            string end_time = Validate(Console.ReadLine(), "date");
+            if (end_time == "MENU") { return; }
 
-            using (var con = new SQLiteConnection(dbString))
+            using (var con = new SQLiteConnection(conString))
             {
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "UPDATE habit SET quantity=(@quantity), date=(@date) WHERE id=(@id) ";
-                    cmd.Parameters.AddWithValue("@quantity", entry_quantity);
-                    cmd.Parameters.AddWithValue("@date", entry_date);
+                    cmd.CommandText = "UPDATE sessions SET start_time=(@start_time), end_time=(@end_time) WHERE id=(@id) ";
+                    cmd.Parameters.AddWithValue("@start_time", start_time);
+                    cmd.Parameters.AddWithValue("@end_time", end_time);
                     cmd.Parameters.AddWithValue("@id", entry_id);
                     cmd.ExecuteNonQuery();
                 }
