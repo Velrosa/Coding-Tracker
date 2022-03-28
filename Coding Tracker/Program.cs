@@ -57,7 +57,8 @@ namespace Coding_Tracker
                     break;
                 case "1":
                     Console.Clear();
-                    ViewRecords(selector);
+                    //ViewRecords(selector);
+                    ShowTable();
                     break;
                 case "2":
                     Console.Clear();
@@ -123,6 +124,12 @@ namespace Coding_Tracker
 
         }
 
+        public static void ShowTable()
+        {
+            ConsoleTableBuilder.From(SessionController.Get()).ExportAndWriteLine();
+            Console.ReadKey();
+        }
+        
         public static void InsertRecord()
         {
             Console.WriteLine("Inserting a Session Record...  Type MENU to return.");
@@ -151,27 +158,35 @@ namespace Coding_Tracker
         {
             Console.WriteLine("\nDisplaying all session records:\n");
 
+            List<Session> tableData = new List<Session>();
             using (var con = new SQLiteConnection(conString))
             {
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "SELECT rowid, * FROM sessions";
+                    cmd.CommandText = "SELECT * FROM sessions";
 
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
                         {
-                            Console.WriteLine("  ID  | Start Time | End Time");
-                            Console.WriteLine("-----------------------------");
+                            //Console.WriteLine("  ID  | Start Time | End Time");
+                            //Console.WriteLine("-----------------------------");
                             while (reader.Read())
                             {
-                                Console.WriteLine("{0,5} | {1,8} | {2}", reader["id"], reader["start_time"], reader["end_time"]);
+                                tableData.Add(new Session
+                                { 
+                                    Id = reader.GetInt32(0),
+                                    StartTime = reader.GetString(1),
+                                    EndTime = reader.GetString(2),
+                                });
+                                //Console.WriteLine("{0,5} | {1,8} | {2}", reader["id"], reader["start_time"], reader["end_time"]);
                             }
                         }
                     }
                 }
             }
+            //ShowTable(tableData);
 
             if (selector == "1")
             {
