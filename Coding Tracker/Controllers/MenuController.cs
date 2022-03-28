@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Coding_Tracker
 {
     internal class MenuController
     {
+        static string conString = ConfigurationManager.AppSettings.Get("conString");
         public static void DisplayMenu()
         {
             string selector = MenuView.MainMenu();
@@ -18,27 +22,49 @@ namespace Coding_Tracker
                     Environment.Exit(0);
                     break;
                 case "1":
-                    SessionController.GetTable(selector);
+                    SessionView.ShowTable(selector);
                     break;
                 case "2":
                     Console.Clear();
-                    //InsertRecord();
+                    SessionView.InsertView(selector);
                     break;
                 case "3":
                     Console.Clear();
-                    //ViewRecords(selector);
-                    //DeleteRecord();
+                    SessionView.DeleteView(selector);
                     break;
                 case "4":
                     Console.Clear();
-                    //ViewRecords(selector);
-                    //UpdateRecord();
+                    SessionView.UpdateView(selector);
                     break;
                 default:
                     Console.Write("Invalid Entry. press key to return... ");
                     Console.ReadKey();
                     break;
 
+            }
+        }
+        internal class Program
+        {
+            static void Main(string[] args)
+            {
+                if (!File.Exists("database.sqlite3"))
+                {
+                    SQLiteConnection.CreateFile("database.sqlite3");
+
+                    using (var con = new SQLiteConnection(conString))
+                    {
+                        using (var cmd = con.CreateCommand())
+                        {
+                            cmd.CommandText = "CREATE TABLE sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, start_time TEXT, end_time TEXT, total_time TEXT);";
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+
+                while (true)
+                {
+                    DisplayMenu();
+                }
             }
         }
     }

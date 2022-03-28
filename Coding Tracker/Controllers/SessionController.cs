@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using System.Data.SQLite;
-using ConsoleTableExt;
 
 namespace Coding_Tracker
 {
@@ -13,7 +12,7 @@ namespace Coding_Tracker
     {
         static string conString = ConfigurationManager.AppSettings.Get("conString");
         
-        public static void GetTable(string selector)
+        public static List<Session> GetTable()
         {
             List<Session> tableData = new List<Session>();
 
@@ -41,12 +40,52 @@ namespace Coding_Tracker
                     }
                 }
             }
-            TableView.ShowTable(tableData, selector);
+            return tableData;
         }
 
-        public static void InsertRow()
+        public static void InsertRow(string startTime, string endTime)
         {
+            using (var con = new SQLiteConnection(conString))
+            {
+                using (var cmd = con.CreateCommand())
+                {
+                    con.Open();
+                    cmd.CommandText = "INSERT INTO sessions (start_time, end_time) VALUES (@start_time, @end_time)";
+                    cmd.Parameters.AddWithValue("@start_time", startTime);
+                    cmd.Parameters.AddWithValue("@end_time", endTime);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
+        public static void UpdateRow(string entryId, string startTime, string endTime)
+        {
+            using (var con = new SQLiteConnection(conString))
+            {
+                using (var cmd = con.CreateCommand())
+                {
+                    con.Open();
+                    cmd.CommandText = "UPDATE sessions SET start_time=(@start_time), end_time=(@end_time) WHERE id=(@id) ";
+                    cmd.Parameters.AddWithValue("@id", entryId);
+                    cmd.Parameters.AddWithValue("@start_time", startTime);
+                    cmd.Parameters.AddWithValue("@end_time", endTime);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteRow(string entryId)
+        {
+            using (var con = new SQLiteConnection(conString))
+            {
+                using (var cmd = con.CreateCommand())
+                {
+                    con.Open();
+                    cmd.CommandText = "DELETE FROM sessions WHERE id=(@Id)";
+                    cmd.Parameters.AddWithValue("@Id", entryId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }   
         
