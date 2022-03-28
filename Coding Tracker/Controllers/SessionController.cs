@@ -12,8 +12,8 @@ namespace Coding_Tracker
     internal class SessionController
     {
         static string conString = ConfigurationManager.AppSettings.Get("conString");
-
-        public static List<Session> Get()
+        
+        public static void GetTable(string selector)
         {
             List<Session> tableData = new List<Session>();
 
@@ -41,9 +41,12 @@ namespace Coding_Tracker
                     }
                 }
             }
-            //Program.ShowTable(tableData);
-            
-            return tableData;
+            TableView.ShowTable(tableData, selector);
+        }
+
+        public static void InsertRow()
+        {
+
         }
     }   
         

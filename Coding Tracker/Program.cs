@@ -17,70 +17,10 @@ namespace Coding_Tracker
         public static string conString = ConfigurationManager.AppSettings.Get("conString");
         static void Main(string[] args)
         {
-            var tableData = new List<List<object>>
-            {
-                new List<object>{ "Sakura Yamamoto", "Support Engineer", "London", 46},
-                new List<object>{ "Serge Baldwin", "Data Coordinator", "San Francisco", 28, "something else" },
-                new List<object>{ "Shad Decker", "Regional Director", "Edinburgh"},
-            };
-
-            //ConsoleTableBuilder.From(tableData).ExportAndWriteLine();
-
-            //Console.ReadLine();
-
             while (true)
             {
-                MainMenu();
+                MenuController.DisplayMenu();
             }
-        }
-
-        public static void MainMenu()
-        {
-            Database databaseObject = new Database();
-
-            Console.Clear();
-
-            Console.WriteLine("\nMAIN MENU\n\n" +
-                "What would you like to do?\n\n" +
-                "Type 0 to Close Application.\n" +
-                "Type 1 to View All Records.\n" +
-                "Type 2 to Insert Record.\n" +
-                "Type 3 to Delete Record.\n" +
-                "Type 4 to Update Record.\n");
-
-            string selector = Convert.ToString(Console.ReadKey(true).KeyChar);
-
-            switch (selector)
-            {
-                case "0":
-                    Environment.Exit(0);
-                    break;
-                case "1":
-                    Console.Clear();
-                    //ViewRecords(selector);
-                    ShowTable();
-                    break;
-                case "2":
-                    Console.Clear();
-                    InsertRecord();
-                    break;
-                case "3":
-                    Console.Clear();
-                    ViewRecords(selector);
-                    DeleteRecord();
-                    break;
-                case "4":
-                    Console.Clear();
-                    ViewRecords(selector);
-                    UpdateRecord();
-                    break;
-                default:
-                    Console.Write("Invalid Entry. press key to return... ");
-                    Console.ReadKey();
-                    break;
-
-            }
-
         }
 
         public static string Validate(string entry, string type)
@@ -123,12 +63,6 @@ namespace Coding_Tracker
             return entry;
 
         }
-
-        public static void ShowTable()
-        {
-            ConsoleTableBuilder.From(SessionController.Get()).ExportAndWriteLine();
-            Console.ReadKey();
-        }
         
         public static void InsertRecord()
         {
@@ -152,48 +86,6 @@ namespace Coding_Tracker
                     cmd.ExecuteNonQuery();
                 }
             }
-        }
-
-        public static void ViewRecords(string selector)
-        {
-            Console.WriteLine("\nDisplaying all session records:\n");
-
-            List<Session> tableData = new List<Session>();
-            using (var con = new SQLiteConnection(conString))
-            {
-                using (var cmd = con.CreateCommand())
-                {
-                    con.Open();
-                    cmd.CommandText = "SELECT * FROM sessions";
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            //Console.WriteLine("  ID  | Start Time | End Time");
-                            //Console.WriteLine("-----------------------------");
-                            while (reader.Read())
-                            {
-                                tableData.Add(new Session
-                                { 
-                                    Id = reader.GetInt32(0),
-                                    StartTime = reader.GetString(1),
-                                    EndTime = reader.GetString(2),
-                                });
-                                //Console.WriteLine("{0,5} | {1,8} | {2}", reader["id"], reader["start_time"], reader["end_time"]);
-                            }
-                        }
-                    }
-                }
-            }
-            //ShowTable(tableData);
-
-            if (selector == "1")
-            {
-                Console.Write("\nPress any key to return to menu... ");
-                Console.ReadKey();
-            }
-
         }
 
         public static void DeleteRecord()
