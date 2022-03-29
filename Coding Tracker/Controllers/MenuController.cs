@@ -36,6 +36,15 @@ namespace Coding_Tracker
                     Console.Clear();
                     SessionView.DeleteView(selector);
                     break;
+                case "5":
+                    Console.Clear();
+                    if (SessionController.GetActive() == null)
+                    {
+                        SessionView.OpenSession(selector);
+                    }
+                    else { SessionView.CloseSession(SessionController.GetActive()); }
+
+                    break;
                 default:
                     Console.Write("Invalid Entry. press key to return... ");
                     Console.ReadKey();

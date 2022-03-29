@@ -18,7 +18,8 @@ namespace Coding_Tracker
                                 "Type 1 to View All Coding Sessions.\n" +
                                 "Type 2 to Add a Coding Session.\n" +
                                 "Type 3 to Update a Coding Session.\n" +
-                                "Type 4 to Delete a Coding Session.\n");
+                                "Type 4 to Delete a Coding Session.\n" +
+                                "Type 5 to Open/Close an active Coding Session\n");
 
             return Convert.ToString(Console.ReadKey(true).KeyChar);
         }

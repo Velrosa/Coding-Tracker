@@ -92,5 +92,33 @@ namespace Coding_Tracker
 
             SessionController.DeleteRow(session);
         }
+
+        public static void OpenSession(string selector)
+        {
+            Session session = new Session();
+
+            Console.WriteLine("\nOpening Session, \nAny Key to continue...");
+            Console.ReadKey();
+            
+            session.StartTime = (DateTime.Now).ToString();
+            session.EndTime = "Session Open.";
+            session.Duration = "TBC";
+            session.Active(true);
+
+            SessionController.InsertRow(session);
+        }
+
+        public static void CloseSession(Session session)
+        {
+            Console.WriteLine("\nClosing Session, \nAny Key to continue...");
+            Console.ReadKey();
+
+            session.EndTime = (DateTime.Now).ToString();
+            session.Duration = Validation.Duration(session.StartTime, session.EndTime);
+
+            SessionController.UpdateRow(session);
+
+            ShowTable("1");
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace Coding_Tracker
     internal class SessionController
     {
         private static string conString = ConfigurationManager.AppSettings.Get("conString");
-        
+
         public static List<Session> GetTable()
         {
             List<Session> tableData = new List<Session>();
@@ -35,7 +35,7 @@ namespace Coding_Tracker
                                     StartTime = reader.GetString(1),
                                     EndTime = reader.GetString(2),
                                     Duration = reader.GetString(3)
-                                }) ;
+                                });
                             }
                         }
                         else
@@ -94,6 +94,37 @@ namespace Coding_Tracker
                 }
             }
         }
-    }   
-        
+
+        public static Session GetActive()
+        {
+            Session session = new Session();
+            
+            using (var con = new SQLiteConnection(conString))
+            {
+                using (var cmd = con.CreateCommand())
+                {
+                    con.Open();
+                    cmd.CommandText = "SELECT * FROM sessions WHERE end_time=(@endTime)";
+                    cmd.Parameters.AddWithValue("@endTime", "Session Open.");
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                session.Id = reader.GetInt32(0);
+                                session.StartTime = reader.GetString(1);
+                                session.EndTime = reader.GetString(2);
+                                session.Duration = reader.GetString(2);
+                            }
+                            return session;
+                        }
+                        else { return null; }
+
+                    }
+                }
+            }
+        }
+    }
 }
