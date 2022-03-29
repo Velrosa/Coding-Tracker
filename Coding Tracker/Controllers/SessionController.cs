@@ -10,7 +10,7 @@ namespace Coding_Tracker
 {
     internal class SessionController
     {
-        static string conString = ConfigurationManager.AppSettings.Get("conString");
+        private static string conString = ConfigurationManager.AppSettings.Get("conString");
         
         public static List<Session> GetTable()
         {
@@ -33,9 +33,14 @@ namespace Coding_Tracker
                                 {
                                     Id = reader.GetInt32(0),
                                     StartTime = reader.GetString(1),
-                                    EndTime = reader.GetString(2)
-                                });
+                                    EndTime = reader.GetString(2),
+                                    Duration = reader.GetString(3)
+                                }) ;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No Rows to Display.");
                         }
                     }
                 }
@@ -50,9 +55,10 @@ namespace Coding_Tracker
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "INSERT INTO sessions (start_time, end_time) VALUES (@start_time, @end_time)";
+                    cmd.CommandText = "INSERT INTO sessions (start_time, end_time, total_time) VALUES (@start_time, @end_time, @duration)";
                     cmd.Parameters.AddWithValue("@start_time", session.StartTime);
                     cmd.Parameters.AddWithValue("@end_time", session.EndTime);
+                    cmd.Parameters.AddWithValue("@duration", session.Duration);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -65,10 +71,11 @@ namespace Coding_Tracker
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "UPDATE sessions SET start_time=(@start_time), end_time=(@end_time) WHERE id=(@id) ";
+                    cmd.CommandText = "UPDATE sessions SET start_time=(@start_time), end_time=(@end_time), total_time=(@duration) WHERE id=(@id) ";
                     cmd.Parameters.AddWithValue("@id", session.Id);
                     cmd.Parameters.AddWithValue("@start_time", session.StartTime);
                     cmd.Parameters.AddWithValue("@end_time", session.EndTime);
+                    cmd.Parameters.AddWithValue("@duration", session.Duration);
                     cmd.ExecuteNonQuery();
                 }
             }

@@ -30,23 +30,42 @@ namespace Coding_Tracker
             }
 
             if (type == "date")
-            {
+            {               
                 while (true)
                 {
                     if (entry == "MENU")
                     {
                         return entry;
                     }
-                    else if (!Regex.IsMatch(entry, @"^\d{1,2}/\d{1,2}/\d{2,4}$"))
+                    else if (entry == "NOW")
                     {
-                        Console.Write("Invalid date, Please enter again (DD/MM/YY): ");
+                        DateTime today = DateTime.Now;
+                        return today.ToString();
+                    }
+                    else if (DateTime.TryParse(entry, out DateTime date))
+                    {
+                        return date.ToString();
+                    }
+                    else
+                    {
+                        Console.Write("Invalid date, Please enter again (DD/MM/YY HH:MM:SS): ");
                         entry = Console.ReadLine();
                     }
-                    else break;
-
-                }
+                }            
             }
             return entry;
+        }
+
+        public static string Duration(string StartTime, string EndTime)
+        {
+            DateTime start = DateTime.Parse(StartTime);
+            DateTime finish = DateTime.Parse(EndTime);
+
+            if (start > finish)
+            {
+                return "INVALID";
+            }
+            else { return (finish - start).ToString(); }
         }
     }
 }

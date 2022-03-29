@@ -30,11 +30,11 @@ namespace Coding_Tracker
                     break;
                 case "3":
                     Console.Clear();
-                    SessionView.DeleteView(selector);
+                    SessionView.UpdateView(selector);
                     break;
                 case "4":
                     Console.Clear();
-                    SessionView.UpdateView(selector);
+                    SessionView.DeleteView(selector);
                     break;
                 default:
                     Console.Write("Invalid Entry. press key to return... ");

@@ -28,15 +28,23 @@ namespace Coding_Tracker
         {
             Session session = new Session();
 
-            Console.WriteLine("Inserting a Session Record...  Type MENU to return.");
+            Console.WriteLine("\nAdding a Coding session...   \nType MENU to return, Type NOW for the current time.");
             
-            Console.Write("Please Enter the Start Date (DD/MM/YY): ");
+            Console.Write("\nPlease Enter the Start Date (DD/MM/YY HH:MM): ");
             session.StartTime = Validation.Validate(Console.ReadLine(), "date");
             if (session.StartTime == "MENU") { return; }
             
-            Console.Write("Please Enter the End Date (DD/MM/YY): ");
+            Console.Write("\nPlease Enter the End Date (DD/MM/YY HH:MM): ");
             session.EndTime = Validation.Validate(Console.ReadLine(), "date");
             if (session.EndTime == "MENU") { return; }
+
+            session.Duration = Validation.Duration(session.StartTime, session.EndTime);
+            if (session.Duration == "INVALID")
+            {
+                Console.WriteLine("\nInvalid time duration between entrys, Press any key to return to the MENU.");
+                Console.ReadKey();
+                return;
+            }
 
             SessionController.InsertRow(session);
         }
@@ -47,19 +55,26 @@ namespace Coding_Tracker
             
             ShowTable(selector);
             
-            Console.WriteLine("\nUpdating a Record...  Type MENU to return.");
+            Console.WriteLine("\nUpdating a Coding session...  \nType MENU to return.");
 
-            Console.Write("Please Enter the ID of the entry to change: ");
+            Console.Write("\nPlease Enter the ID of the entry to change: ");
             string entryId = Validation.Validate(Console.ReadLine(), "id");
             if (entryId == "MENU") { return; } else { session.Id = Convert.ToInt32(entryId); }
 
-            Console.Write("Please Enter a start date (DD/MM/YY): ");
+            Console.Write("\nPlease Enter a start date (DD/MM/YY HH:MM): ");
             session.StartTime = Validation.Validate(Console.ReadLine(), "date");
             if (session.StartTime == "MENU") { return; }
 
-            Console.Write("Please Enter a end date (DD/MM/YY): ");
+            Console.Write("\nPlease Enter a end date (DD/MM/YY HH:MM): ");
             session.EndTime = Validation.Validate(Console.ReadLine(), "date");
             if (session.EndTime == "MENU") { return; }
+
+            session.Duration = Validation.Duration(session.StartTime, session.EndTime);
+            if (session.Duration == "INVALID")
+            {
+                Console.WriteLine("\nInvalid time duration between entrys, Press any key to return to the MENU.");
+                Console.ReadKey();
+            }
 
             SessionController.UpdateRow(session);
         }
@@ -70,13 +85,12 @@ namespace Coding_Tracker
 
             ShowTable(selector);
 
-            Console.WriteLine("\nDeleting a Record...  Type MENU to return.");
-            Console.Write("Enter ID for entry to delete: ");
+            Console.WriteLine("\nDeleting a Coding session...  \nType MENU to return.");
+            Console.Write("\nEnter ID for entry to delete: ");
             string entryId = Validation.Validate(Console.ReadLine(), "id");
             if (entryId == "MENU") { return; } else { session.Id = Convert.ToInt32(entryId); }
 
             SessionController.DeleteRow(session);
         }
-
     }
 }
