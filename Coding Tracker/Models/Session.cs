@@ -12,12 +12,5 @@ namespace Coding_Tracker
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public string Duration { get; set; }
-
-        private bool Open;
-
-        public void Active(bool state)
-        {
-            Open = state;
-        }
     }
 }

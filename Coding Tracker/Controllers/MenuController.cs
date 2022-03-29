@@ -46,7 +46,7 @@ namespace Coding_Tracker
 
                     break;
                 default:
-                    Console.Write("Invalid Entry. press key to return... ");
+                    Console.Write("Invalid Entry. press any key to return... ");
                     Console.ReadKey();
                     break;
 
