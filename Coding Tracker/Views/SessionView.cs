@@ -13,13 +13,13 @@ namespace Coding_Tracker
         {
             Console.Clear();
 
-            Console.WriteLine("\nDisplaying all session records:\n");
+            Console.WriteLine("\n Displaying all session records:\n");
             
             ConsoleTableBuilder.From(SessionController.GetTable()).ExportAndWriteLine();
 
             if (selector == "1")
             {
-                Console.Write("\nPress any key to return to menu... ");
+                Console.Write("\n Press any key to return to menu... ");
                 Console.ReadKey();
             }
         }
@@ -28,20 +28,20 @@ namespace Coding_Tracker
         {
             Session session = new Session();
 
-            Console.WriteLine("\nAdding a Coding session...   \nType MENU to return, Type NOW for the current time.");
+            Console.WriteLine("\n Adding a Coding session...   \n Type MENU to return, Type NOW for the current time.");
             
-            Console.Write("\nPlease Enter the Start Date (DD/MM/YY HH:MM): ");
+            Console.Write("\n Please Enter the Start Date (DD/MM/YY HH:MM): ");
             session.StartTime = Validation.Validate(Console.ReadLine(), "date");
             if (session.StartTime == "MENU") { return; }
             
-            Console.Write("\nPlease Enter the End Date (DD/MM/YY HH:MM): ");
+            Console.Write("\n Please Enter the End Date (DD/MM/YY HH:MM): ");
             session.EndTime = Validation.Validate(Console.ReadLine(), "date");
             if (session.EndTime == "MENU") { return; }
 
             session.Duration = Validation.Duration(session.StartTime, session.EndTime);
             if (session.Duration == "INVALID")
             {
-                Console.WriteLine("\nInvalid time duration between entrys, Press any key to return to the MENU.");
+                Console.WriteLine("\n Invalid time duration between entrys, Press any key to return to the MENU.");
                 Console.ReadKey();
                 return;
             }
@@ -55,24 +55,24 @@ namespace Coding_Tracker
             
             ShowTable(selector);
             
-            Console.WriteLine("\nUpdating a Coding session...  \nType MENU to return.");
+            Console.WriteLine("\n Updating a Coding session...  \n Type MENU to return.");
 
-            Console.Write("\nPlease Enter the ID of the entry to change: ");
+            Console.Write("\n Please Enter the ID of the entry to change: ");
             string entryId = Validation.Validate(Console.ReadLine(), "id");
             if (entryId == "MENU") { return; } else { session.Id = Convert.ToInt32(entryId); }
 
-            Console.Write("\nPlease Enter a start date (DD/MM/YY HH:MM): ");
+            Console.Write("\n Please Enter a start date (DD/MM/YY HH:MM): ");
             session.StartTime = Validation.Validate(Console.ReadLine(), "date");
             if (session.StartTime == "MENU") { return; }
 
-            Console.Write("\nPlease Enter a end date (DD/MM/YY HH:MM): ");
+            Console.Write("\n Please Enter a end date (DD/MM/YY HH:MM): ");
             session.EndTime = Validation.Validate(Console.ReadLine(), "date");
             if (session.EndTime == "MENU") { return; }
 
             session.Duration = Validation.Duration(session.StartTime, session.EndTime);
             if (session.Duration == "INVALID")
             {
-                Console.WriteLine("\nInvalid time duration between entrys, Press any key to return to the MENU.");
+                Console.WriteLine("\n Invalid time duration between entrys, Press any key to return to the MENU.");
                 Console.ReadKey();
             }
 
@@ -85,8 +85,8 @@ namespace Coding_Tracker
 
             ShowTable(selector);
 
-            Console.WriteLine("\nDeleting a Coding session...  \nType MENU to return.");
-            Console.Write("\nEnter ID for entry to delete: ");
+            Console.WriteLine("\n Deleting a Coding session...  \n Type MENU to return.");
+            Console.Write("\n Enter ID for entry to delete: ");
             string entryId = Validation.Validate(Console.ReadLine(), "id");
             if (entryId == "MENU") { return; } else { session.Id = Convert.ToInt32(entryId); }
 
@@ -97,7 +97,7 @@ namespace Coding_Tracker
         {
             Session session = new Session();
 
-            Console.WriteLine("\nOpening Active Session... \n\nAny Key to continue...");
+            Console.WriteLine("\n Opening Active Session... \n\n Any Key to continue...");
             Console.ReadKey();
             
             session.StartTime = (DateTime.Now).ToString();
@@ -109,7 +109,7 @@ namespace Coding_Tracker
 
         public static void CloseSession(Session session)
         {
-            Console.WriteLine("\nClosing Active Session... \n\nAny Key to continue...");
+            Console.WriteLine("\n Closing Active Session... \n\n Any Key to continue...");
             Console.ReadKey();
 
             session.EndTime = (DateTime.Now).ToString();

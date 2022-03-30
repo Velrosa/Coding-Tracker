@@ -40,7 +40,7 @@ namespace Coding_Tracker
                         }
                         else
                         {
-                            Console.WriteLine("No Rows to Display.");
+                            Console.WriteLine(" No Rows to Display.");
                         }
                     }
                 }
@@ -116,7 +116,7 @@ namespace Coding_Tracker
                                 session.Id = reader.GetInt32(0);
                                 session.StartTime = reader.GetString(1);
                                 session.EndTime = reader.GetString(2);
-                                session.Duration = reader.GetString(2);
+                                session.Duration = reader.GetString(3);
                             }
                             return session;
                         }

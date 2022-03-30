@@ -23,7 +23,7 @@ namespace Coding_Tracker
                     {
                         return entry;
                     }
-                    Console.Write("Invalid entry, Please enter a number: ");
+                    Console.Write(" Invalid entry, Please enter a number: ");
                     entry = Console.ReadLine();
                     isNumber = int.TryParse(entry, out valid_num);
                 }
@@ -48,7 +48,7 @@ namespace Coding_Tracker
                     }
                     else
                     {
-                        Console.Write("Invalid date, Please enter again (DD/MM/YY HH:MM:SS): ");
+                        Console.Write(" Invalid date, Please enter again (DD/MM/YY HH:MM:SS): ");
                         entry = Console.ReadLine();
                     }
                 }            
