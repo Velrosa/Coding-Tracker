@@ -22,7 +22,8 @@ namespace Coding_Tracker
                 {
                     using (var cmd = con.CreateCommand())
                     {
-                        cmd.CommandText = "CREATE TABLE sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, start_time TEXT, end_time TEXT, total_time TEXT);";
+                        con.Open();
+                        cmd.CommandText = "CREATE TABLE sessions (start_time TEXT, end_time TEXT, total_time TEXT);"; //id INTEGER PRIMARY KEY AUTOINCREMENT, 
                         cmd.ExecuteNonQuery();
                     }
                 }

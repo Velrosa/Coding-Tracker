@@ -21,7 +21,7 @@ namespace Coding_Tracker
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "SELECT * FROM sessions";
+                    cmd.CommandText = "SELECT rowid, * FROM sessions";
 
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -71,7 +71,7 @@ namespace Coding_Tracker
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "UPDATE sessions SET start_time=(@start_time), end_time=(@end_time), total_time=(@duration) WHERE id=(@id) ";
+                    cmd.CommandText = "UPDATE sessions SET start_time=(@start_time), end_time=(@end_time), total_time=(@duration) WHERE rowid=(@id) ";
                     cmd.Parameters.AddWithValue("@id", session.Id);
                     cmd.Parameters.AddWithValue("@start_time", session.StartTime);
                     cmd.Parameters.AddWithValue("@end_time", session.EndTime);
@@ -88,7 +88,7 @@ namespace Coding_Tracker
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "DELETE FROM sessions WHERE id=(@Id)";
+                    cmd.CommandText = "DELETE FROM sessions WHERE rowid=(@Id)";
                     cmd.Parameters.AddWithValue("@Id", session.Id);
                     cmd.ExecuteNonQuery();
                 }
@@ -104,7 +104,7 @@ namespace Coding_Tracker
                 using (var cmd = con.CreateCommand())
                 {
                     con.Open();
-                    cmd.CommandText = "SELECT * FROM sessions WHERE end_time=(@endTime)";
+                    cmd.CommandText = "SELECT rowid, * FROM sessions WHERE end_time=(@endTime)";
                     cmd.Parameters.AddWithValue("@endTime", "Session Open.");
 
                     using (var reader = cmd.ExecuteReader())
