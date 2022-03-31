@@ -10,8 +10,10 @@ namespace Coding_Tracker
 {
     internal class SessionController
     {
+        // Connection string to Database.
         private static string conString = ConfigurationManager.AppSettings.Get("conString");
 
+        // Fetchs all database information back to be displayed elsewhere.
         public static List<Session> GetTable()
         {
             List<Session> tableData = new List<Session>();
@@ -94,7 +96,7 @@ namespace Coding_Tracker
                 }
             }
         }
-
+        // Checks database for an active coding session, if there is one, return its information in the session model else null.
         public static Session GetActive()
         {
             Session session = new Session();

@@ -16,6 +16,7 @@ namespace Coding_Tracker
 
             if (type == "number" || type == "id")
             {
+                // TryParse the entry to confirm its a number, else re-enter.
                 bool isNumber = int.TryParse(entry, out valid_num);
                 while (!isNumber || valid_num < 0)
                 {
@@ -56,6 +57,7 @@ namespace Coding_Tracker
             return entry;
         }
 
+        // Calculates the duration of a session.
         public static string Duration(string StartTime, string EndTime)
         {
             DateTime start = DateTime.Parse(StartTime);

@@ -9,6 +9,7 @@ namespace Coding_Tracker
 {
     internal class SessionView
     {
+        // Displays a table with all the current records in.
         public static void ShowTable(string selector)
         {
             Console.Clear();
@@ -24,6 +25,7 @@ namespace Coding_Tracker
             }
         }
 
+        // Interface for inserting a record into the database.
         public static void InsertView(string selector)
         {
             Session session = new Session();
@@ -48,7 +50,8 @@ namespace Coding_Tracker
 
             SessionController.InsertRow(session);
         }
-
+        
+        // Interface for updating a record in the database.
         public static void UpdateView(string selector)
         {
             Session session = new Session();
@@ -79,6 +82,7 @@ namespace Coding_Tracker
             SessionController.UpdateRow(session);
         }
 
+        // Interface for deleting a record in the database.
         public static void DeleteView(string selector)
         {
             Session session = new Session();
@@ -93,6 +97,7 @@ namespace Coding_Tracker
             SessionController.DeleteRow(session);
         }
 
+        // Opens an active coding session, give it the current time and session open state.
         public static void OpenSession(string selector)
         {
             Session session = new Session();
@@ -107,6 +112,7 @@ namespace Coding_Tracker
             SessionController.InsertRow(session);
         }
 
+        // Updates the active coding session (if there is one) with its end time as the current time and Duration calculated.
         public static void CloseSession(Session session)
         {
             Console.WriteLine("\n Closing Active Session... \n\n Any Key to continue...");

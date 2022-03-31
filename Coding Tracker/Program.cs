@@ -11,9 +11,11 @@ namespace Coding_Tracker
 {
     internal class Program
     {
+        // Stores Connection string to database in a variable from the config file.
         static string conString = ConfigurationManager.AppSettings.Get("conString");
         static void Main(string[] args)
         {
+            // Checks if the database file exists, if not it creates one and populates it with a table.
             if (!File.Exists("database.sqlite3"))
             {
                 SQLiteConnection.CreateFile("database.sqlite3");
@@ -29,6 +31,7 @@ namespace Coding_Tracker
                 }
             }
 
+            // Main runtime loop for the application.
             while (true)
             {
                 DisplayMenu();
@@ -36,8 +39,8 @@ namespace Coding_Tracker
         }
         public static void DisplayMenu()
         {
+            // Variable for if an Active coding session is open or not.
             string activeState;
-
             if (SessionController.GetActive() == null) { activeState = "Begin"; } else { activeState = "End"; }
 
             Console.Clear();
@@ -51,6 +54,7 @@ namespace Coding_Tracker
                                 " Type 4 to Delete a Coding Session.\n" +
                                 " Type 5 to {0} an active Coding Session\n", activeState);
 
+            // Users selection from the Menu.
             string selector = Convert.ToString(Console.ReadKey(true).KeyChar);
 
             switch (selector)
