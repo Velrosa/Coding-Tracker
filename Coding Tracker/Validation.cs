@@ -7,65 +7,50 @@ using System.Text.RegularExpressions;
 
 namespace Coding_Tracker
 {
-    internal class Validation
+    public class Validation
     {
-        public static string Validate(string entry, string type)
+        public static bool IsNumberValid(string numberInput)
         {
-            int valid_num = 0;
-
-
-            if (type == "number" || type == "id")
+            if (numberInput == "MENU")
             {
-                // TryParse the entry to confirm its a number, else re-enter.
-                bool isNumber = int.TryParse(entry, out valid_num);
-                while (!isNumber || valid_num < 0)
-                {
-                    if (entry == "MENU")
-                    {
-                        return entry;
-                    }
-                    Console.Write(" Invalid entry, Please enter a number: ");
-                    entry = Console.ReadLine();
-                    isNumber = int.TryParse(entry, out valid_num);
-                }
+                return true;
             }
+            if (!Int32.TryParse(numberInput, out int number))
+            {
+                Console.WriteLine($"\n \"{numberInput}\" is not a valid number.");
+                return false;
+            }
+            if (number < 0)
+            {
+                return false;
+            }
+            return true;
+        }
 
-            if (type == "date")
-            {               
-                while (true)
-                {
-                    if (entry == "MENU")
-                    {
-                        return entry;
-                    }
-                    else if (entry == "NOW")
-                    {
-                        DateTime today = DateTime.Now;
-                        return today.ToString();
-                    }
-                    else if (DateTime.TryParse(entry, out DateTime date))
-                    {
-                        return date.ToString();
-                    }
-                    else
-                    {
-                        Console.Write(" Invalid date, Please enter again (DD/MM/YY HH:MM:SS): ");
-                        entry = Console.ReadLine();
-                    }
-                }            
+        public static bool IsDateValid(string dateInput)
+        {
+            if (dateInput == "MENU")
+            {
+                return true;
             }
-            return entry;
+            if (!DateTime.TryParse(dateInput, out DateTime date))
+            {
+                Console.WriteLine($"\n \"{dateInput}\" is not a valid Date.");
+                return false;
+            }
+            return true;
+
         }
 
         // Calculates the duration of a session.
-        public static string Duration(string StartTime, string EndTime)
+        public static string IsDurationValid(string StartTime, string EndTime)
         {
             DateTime start = DateTime.Parse(StartTime);
             DateTime finish = DateTime.Parse(EndTime);
 
             if (start > finish)
             {
-                return "INVALID";
+                return null;
             }
             else { return (finish - start).ToString(); }
         }
